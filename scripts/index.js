@@ -27,4 +27,6 @@ function createCard(card, funDelCard) {
   return cardElement;
 }
 
-initialCards.forEach( item => placesList.append(createCard(item, delCard)));
+initialCards.forEach( item => {
+  placesList.append(createCard(item, delCard))
+});
