@@ -16,15 +16,15 @@ function delCard (evt) {
   parentBttnDelCard.remove();
 }
 
-function createCard(cards, funDelCard) {
-  cards.forEach(detailsCard => {
-    const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
-    cardElement.querySelector('.card__image').src = `${detailsCard.link}`;
-    cardElement.querySelector('.card__image').alt = `Фото: ${detailsCard.name}`;
-    cardElement.querySelector('.card__title').textContent = `${detailsCard.name}`;
-    cardElement.querySelector('.card__delete-button').addEventListener('click', funDelCard);
-    placesList.append(cardElement);
-  })
+function createCard(card, funDelCard) {
+  const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
+  
+  cardElement.querySelector('.card__image').src = `${card.link}`;
+  cardElement.querySelector('.card__image').alt = `Фото: ${card.name}`;
+  cardElement.querySelector('.card__title').textContent = `${card.name}`;
+  cardElement.querySelector('.card__delete-button').addEventListener('click', funDelCard);
+  
+  return cardElement;
 }
 
-createCard(initialCards, delCard);
+initialCards.forEach( item => placesList.append(createCard(item, delCard)));
