@@ -1,5 +1,6 @@
 import '../pages/index.css'; // импорт главного файла стилей
-import {createCard, initialCards, delCard, likeCard} from './cards.js';
+import {createCard, delCard, likeCard} from './card.js';
+import {initialCards} from './cards.js';
 import {openModal, closeModal} from './modal.js';
 
 export const cardTemplate = document.querySelector('#card-template').content;
