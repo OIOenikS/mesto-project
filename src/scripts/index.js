@@ -80,7 +80,7 @@ function handleFormNewPlaceSubmit(evt) {
   const valueLink = linkInput.value;
   const initialNewCard = {name: valueNamePlace, link: valueLink};
   
-  placesList.prepend(createCard(initialNewCard, delCard, likeCard, openModal));
+  placesList.prepend(createCard(initialNewCard, openPopupImg, delCard, likeCard));
 
   evt.target.reset();
   closeModal(evt.target.closest('.popup'));
