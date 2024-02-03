@@ -17,6 +17,8 @@ const popupNewCard = document.querySelector('.popup_type_new-card');
 const bttnClosePopupNewCard = popupNewCard.querySelector('.popup__close');
 
 const popupImage = document.querySelector('.popup_type_image');
+const captionPopup = popupImage.querySelector('.popup__caption');
+const imgOfPopup = popupImage.querySelector('.popup__image');
 const bttnClosePopupImage = popupImage.querySelector('.popup__close');
 
 const formEditProfile = document.querySelector('form[name=edit-profile]');
@@ -32,9 +34,6 @@ const profileJob = document.querySelector('.profile__description');
 
 //Обработчик открытия popup с img - начало
 function openPopupImg (evt) {
-  const captionPopup = popupImage.querySelector('.popup__caption');
-  const imgOfPopup = popupImage.querySelector('.popup__image');
-
   imgOfPopup.src = evt.target.src;
   imgOfPopup.alt = evt.target.alt;
   captionPopup.textContent = evt.target.closest('.places__item').textContent;

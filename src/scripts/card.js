@@ -8,8 +8,12 @@ function likeCard (bttnLike) {
   bttnLike.classList.toggle('card__like-button_is-active');
 }
 
-function createCard(card, funOpenPopupImg, funDelCard, funLikeCard) {
-  const cardElement = cardTemplate.querySelector('.places__item').cloneNode(true);
+function getCardTemplate (templateCard) {
+  return templateCard.querySelector('.places__item').cloneNode(true);
+}
+
+function createCard(card, openImagePopup, deleteCard, likeCard) {
+  const cardElement = getCardTemplate(cardTemplate);
   const cardTitle = cardElement.querySelector('.card__title');
   const imgCard = cardElement.querySelector('.card__image');
   const buttonCardDel = cardElement.querySelector('.card__delete-button');
@@ -19,13 +23,13 @@ function createCard(card, funOpenPopupImg, funDelCard, funLikeCard) {
 
   imgCard.src = `${card.link}`;
   imgCard.alt = `Фото: ${card.name}`;
-  imgCard.addEventListener('click', funOpenPopupImg);
+  imgCard.addEventListener('click', openImagePopup);
   
   buttonCardDel.addEventListener('click', () => {
-    funDelCard(cardElement);
+    deleteCard(cardElement);
   });
   buttonlikeCard.addEventListener('click', (evt) => {
-    funLikeCard(evt.target);
+    likeCard(evt.target);
   });
 
   return cardElement;
