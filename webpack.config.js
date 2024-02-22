@@ -11,6 +11,8 @@ module.exports = {
     filename: 'main.js',
     publicPath: '',
   },
+  
+  devtool: "source-map", // это поможет видеть оригинальный код, а не минифицированный и при отладке во вкладке Sources в Devtools, и в сообщениях об ошибке
 // указали, в какой файл будет собираться весь js, и дали ему имя:
   mode: 'development', // добавили режим разработчика
   devServer: {
