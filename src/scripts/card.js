@@ -1,6 +1,7 @@
-import {cardTemplate} from './index.js';
-import {deleteCardServer, addLikeServer, deleteLikeServer} from './api.js';
+import {cardTemplate, formConfirm} from './constants.js';
+import {addLikeServer, deleteLikeServer} from './api.js';
 import {openModal, closeModal} from './modal.js';
+import {deleteCardServer} from './api.js';
 
 function delCard (cardItem) {
   cardItem.remove();
@@ -38,7 +39,7 @@ function checkMyLike (card, userId) {
   })
 }
 
-function changeStatusMyLike (card, buttonlikeCard, likeCounter) {
+function changeStatusMyLike (card, buttonlikeCard, likeCounter, likeCard) {
   if (buttonlikeCard.classList.contains('card__like-button_is-active')) {
     deleteLikeServer (card)
       .then ((updatedСard) => {
@@ -64,8 +65,6 @@ function createCard(card, userId ,openImagePopup, deleteCard, likeCard) {
   const idUserCreateCard = card.owner['_id'];
   const counterLikes = card.likes.length;
 
-  
-
   cardTitle.textContent = `${card.name}`;
   likeCounter.textContent = `${counterLikes}`;
   imgCard.src = `${card.link}`;
@@ -74,15 +73,24 @@ function createCard(card, userId ,openImagePopup, deleteCard, likeCard) {
 
   deletebuttonCardDel (idUserCreateCard, userId, buttonCardDel); //Удалили иконку кнопки удаления на карточке
   buttonCardDel.addEventListener('click', () => {
-    openModal (document.querySelector('.popup_type_delete-card'))
+    openModal (document.querySelector('.popup_type_delete-card'));
+    //Открытие окна подтверждения удаления карточки - начало
+      function handleFormConsentDelCardSubmit(evt) {
+        evt.preventDefault();
+        deleteCardServer (card)
+        .then (() => {
+          deleteCard(cardElement);
+          closeModal(document.querySelector('.popup_type_delete-card'));
+        })
+      }
+
+      formConsentDeleteCard.addEventListener('submit', handleFormConsentDelCardSubmit);
+    //Открытие окна подтверждения удаления карточки - конец
   })
-    //deleteCard(cardElement);
-    //deleteCardServer (card);
-  
   
   setCurrentStatusMyLike (card, userId, buttonlikeCard) //Установили текущий статус моего лайка
   buttonlikeCard.addEventListener('click', (evt) => {
-    changeStatusMyLike (card, evt.target, likeCounter);
+    changeStatusMyLike (card, evt.target, likeCounter, likeCard);
   });
 
   return cardElement;

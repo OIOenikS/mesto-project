@@ -1,9 +1,16 @@
 .popup__error {
+  display: block;
+  block-size: 13px;
   font-size: 12px;
   color: red;
   position: relative;
-  inset-block-start: 10px;
-  opacity: 0;
+  inset-block-start: 5px;
+  opacity: 1;
+  margin-block-end: -1px;
+}
+
+.popup__error:last-of-type {
+  margin-block-end: 33px;
 }
 
 .popup__error_visible {

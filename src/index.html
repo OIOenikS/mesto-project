@@ -75,7 +75,7 @@
     <div class="popup__content">
       <button type="button" class="popup__close" aria-label="Закрыть окно с вводом данных новой карточки"></button>
       <h3 class="popup__title">Новое место</h3>
-      <form class="popup__form" name="new-place">
+      <form class="popup__form" name="new-place" novalidate>
         <input 
           id="input-place-name"
           type="text" 
@@ -110,12 +110,11 @@
     </div>
   </div>
 </div>
-
-<div class="popup popup_type_avatar">
+<div class="popup popup_type_update-avatar">
   <div class="popup__content">
     <button type="button" class="popup__close" aria-label="Закрыть окно редактирования аватара"></button>
     <h3 class="popup__title">Обновить аватар</h3>
-    <form class="popup__form" name="new-avatar">
+    <form class="popup__form" name="update-avatar" novalidate>
       <input
         id="input-link-img"
         type="url" 
@@ -129,13 +128,12 @@
     </form>
   </div>
 </div>
-
-<div class="popup popup_type_delete-card">
+<div class="popup popup_type_confirm">
   <div class="popup__content">
     <button type="button" class="popup__close" aria-label="Закрыть окно подтверждения удаления карточки"></button>
     <h3 class="popup__title">Вы уверены?</h3>
-    <form class="popup__form" name="delete-card">
-      <button type="submit" class="button popup__button" aria-label="Подтвердить удаление карточки">Да</button>
+    <form class="popup__form" name="confirm">
+      <button type="submit" class="button popup__button" name="confirm-button" aria-label="Подтвердить удаление карточки">Да</button>
     </form>
   </div>
 </div>

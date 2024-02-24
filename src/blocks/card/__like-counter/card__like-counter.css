@@ -1,4 +1,10 @@
 .card__like-counter {
+  grid-column: 2/3;
+  grid-row: 2/3;
+  justify-self: end;
   font-size: 13px;
-  color: red;
+  color: #000;
+  position: relative;
+  inset-inline-end: 7px;
+  inset-block-start: 3px;
 }

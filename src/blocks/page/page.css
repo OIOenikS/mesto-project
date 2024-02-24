@@ -3,4 +3,5 @@
 
 .page {
   background: #000;
+  box-sizing: border-box;
 }

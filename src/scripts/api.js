@@ -111,7 +111,7 @@ function deleteLikeServer (card) {
 }
 
 //Функция отправки запроса на смену аватара на сервер
-function changeAvatarServer (valuelinkImage) {
+function updateAvatarServer (valuelinkImage) {
   return fetch(`${config.baseUrl}/users/me/avatar`, {
     method: 'PATCH',
     headers: config.headers,
@@ -129,20 +129,21 @@ function changeAvatarServer (valuelinkImage) {
 }
 
 //Функция отправки запроса на проверку URL: URL на изображение, URL действительный
-function validateLinkImage () {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
+/*function validateLinkImage () {
+  return fetch(`https://avatars.mds.yandex.net/i?id=fc9a3c65b17c76d64be0b423cb621d7b1e39a4b9-10093836-images-thumbs&n=13`, {
     method: 'HEAD'
   })
   .then(res => {
     if (res.ok) {
       console.log(res);
     }
-    return Promise.reject(`При запросе на проверку URL на изображение, 
-    возникла ошибка: № ${res.status}`);
+    return Promise.reject(`При запросе на проверку URL, 
+      возникла ошибка: № ${res.status}`);
   });
 }
 
-
+//validateLinkImage ()
+*/
 export {
   getUser, 
   getInitialCards, 
@@ -151,6 +152,5 @@ export {
   deleteCardServer, 
   addLikeServer, 
   deleteLikeServer,
-  changeAvatarServer,
-  validateLinkImage
+  updateAvatarServer
 }

@@ -15,7 +15,6 @@
 
 .popup__input_type_error {
   border-bottom-color: #f00;
-  margin-bottom: -8px;
 }
 
 @media screen and (max-width: 568px) {
