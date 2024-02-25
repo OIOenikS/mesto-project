@@ -107,10 +107,9 @@ function handleFormNewPlaceSubmit(evt) {
   evt.preventDefault();
   const valueNamePlace = namePlaceInput.value;
   const valueLink = linkInput.value;
-  const userId = '407bfac64d311bed9bf8aad4';
   addNewPlaceServer (valueNamePlace, valueLink)
     .then ((newCard) => {
-      placesList.prepend(createCard(newCard, userId, openPopupImg, likeCard));
+      placesList.prepend(createCard(newCard, newCard.owner['_id'], openPopupImg, likeCard));
     })
   evt.target.reset();
   closeModal(evt.target.closest('.popup'));
@@ -140,7 +139,6 @@ Promise.all([getUser(), getInitialCards()])
 
     const cards = resultOfPromises[1];
     cards.forEach( card => {
-      //console.log(card)
       const cardElement = createCard(card, user['_id'] ,openPopupImg, likeCard);
       
       placesList.append(cardElement)
