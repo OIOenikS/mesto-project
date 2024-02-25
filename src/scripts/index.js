@@ -107,11 +107,10 @@ function handleFormNewPlaceSubmit(evt) {
   evt.preventDefault();
   const valueNamePlace = namePlaceInput.value;
   const valueLink = linkInput.value;
-  const initialNewCard = {name: valueNamePlace, link: valueLink, likes: [], owner: {'_id' : '407bfac64d311bed9bf8aad4'}};
   const userId = '407bfac64d311bed9bf8aad4';
   addNewPlaceServer (valueNamePlace, valueLink)
-    .then (() => {
-      placesList.prepend(createCard(initialNewCard, userId, openPopupImg, likeCard));
+    .then ((newCard) => {
+      placesList.prepend(createCard(newCard, userId, openPopupImg, likeCard));
     })
   evt.target.reset();
   closeModal(evt.target.closest('.popup'));
