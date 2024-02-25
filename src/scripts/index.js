@@ -2,7 +2,7 @@ import '../pages/index.css'; // импорт главного файла сти�
 import {createCard, delCard, likeCard} from './card.js';
 import {openModal, closeModal} from './modal.js';
 import {enableValidation, clearValidation} from './validation.js';
-import {getUser, getInitialCards, editeProfileServer, addNewPlaceServer, updateAvatarServer} from './api.js';
+import {getUser, getInitialCards, editeProfileServer, addNewPlaceServer, updateAvatarServer, deleteCardServer} from './api.js';
 import {
   validConfig,
   placesList,
@@ -16,6 +16,7 @@ import {
   bttnClosePopupNewCard,
   popupConfirm,
   bttnClosePopupConfirm,
+  formConfirm,
   popupImage,
   captionPopup,
   imgOfPopup,
@@ -110,7 +111,7 @@ function handleFormNewPlaceSubmit(evt) {
   const userId = '407bfac64d311bed9bf8aad4';
   addNewPlaceServer (valueNamePlace, valueLink)
     .then (() => {
-      placesList.prepend(createCard(initialNewCard, userId, openPopupImg, delCard, likeCard));
+      placesList.prepend(createCard(initialNewCard, userId, openPopupImg, likeCard));
     })
   evt.target.reset();
   closeModal(evt.target.closest('.popup'));
@@ -141,27 +142,26 @@ Promise.all([getUser(), getInitialCards()])
     const cards = resultOfPromises[1];
     cards.forEach( card => {
       //console.log(card)
-      const cardElement = createCard(card, user['_id'] ,openPopupImg, delCard, likeCard);
-/*      const buttonCardDel = cardElement.querySelector('.card__delete-button');
-
-      buttonCardDel.addEventListener('click', () => {
-        openModal (document.querySelector('.popup_type_delete-card'));
-         //Открытие окна подтверждения удаления карточки - начало
-        function handleFormConsentDelCardSubmit(evt) {
-          evt.preventDefault();
-          deleteCardServer (card)
-          .then (() => {
-            deleteCard(cardElement);
-            closeModal(document.querySelector('.popup_type_delete-card'));
-          })
-        }
-  
-        formConsentDeleteCard.addEventListener('submit', handleFormConsentDelCardSubmit);
-      //Открытие окна подтверждения удаления карточки - конец
-*/
+      const cardElement = createCard(card, user['_id'] ,openPopupImg, likeCard);
+      
       placesList.append(cardElement)
+      
     })
   })
   .catch ((err) => {
-    console.log(err); //сделать сложную логику обработки ошибок
+    console.log(err);
   })
+
+//Подтверждение удаления карточки - начало
+function handleFormConfirmSubmit(evt) {
+    evt.preventDefault();
+    const cardId = popupConfirm.dataset.cardId;
+    const card = placesList.querySelector(`[id="${cardId}"]`);
+      deleteCardServer (cardId)
+        .then (() => {
+          delCard(card);
+          closeModal(popupConfirm);
+        })
+  }
+
+formConfirm.addEventListener('submit', handleFormConfirmSubmit);

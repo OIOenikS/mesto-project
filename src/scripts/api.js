@@ -69,8 +69,8 @@ function addNewPlaceServer (namePlace, link) {
 }
 
 //Функция отправки запроса на удаление карточки на сервер
-function deleteCardServer (card) {
-  return fetch(`${config.baseUrl}/cards/${card['_id']}`, {
+function deleteCardServer (cardId) {
+  return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers,
   })
@@ -128,22 +128,6 @@ function updateAvatarServer (valuelinkImage) {
   });
 }
 
-//Функция отправки запроса на проверку URL: URL на изображение, URL действительный
-/*function validateLinkImage () {
-  return fetch(`https://avatars.mds.yandex.net/i?id=fc9a3c65b17c76d64be0b423cb621d7b1e39a4b9-10093836-images-thumbs&n=13`, {
-    method: 'HEAD'
-  })
-  .then(res => {
-    if (res.ok) {
-      console.log(res);
-    }
-    return Promise.reject(`При запросе на проверку URL, 
-      возникла ошибка: № ${res.status}`);
-  });
-}
-
-//validateLinkImage ()
-*/
 export {
   getUser, 
   getInitialCards, 
