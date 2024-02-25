@@ -7,7 +7,23 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+  position: relative;
 }
+
+.profile__image:hover::before {
+  content: '';
+  block-size: 100%;
+  inline-size: 100%;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #0008;
+  background-image: url('/src/images/Vector.png');
+  position: absolute;
+}
+
 
 @media screen and (max-width: 740px) {
   .profile__image {
