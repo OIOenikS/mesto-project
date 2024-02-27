@@ -13,18 +13,6 @@ export function request(url, option) {
   return fetch (url, option).then(checkResponse) 
 }
 
-//Функция установки/снятия состояния лайка 
-export function changeLike(request) {
-  request()
-    .then ((updatedСard) => {
-      likeCard(buttonlikeCard);
-      likeCounter.textContent = updatedСard.likes.length;
-    })
-    .catch((err) => {
-      console.log(`Ошибка: ${err}`)
-    })
-}
-
 // можно сделать универсальную функцию управления текстом кнопки с 3 и 4 необязательными аргументами
 export function renderLoading(isLoading, button, buttonText='Сохранить', loadingText='Сохранение...') {
   if (isLoading) {
