@@ -35,7 +35,6 @@ const bttnClosePopupImage = popupImage.querySelector('.popup__close');
 const formEditProfile = document.querySelector('form[name=edit-profile]');
 const nameInput = formEditProfile.elements.name;
 const jobInput = formEditProfile.elements.description;
-const bttnSaveEditProfile = formEditProfile.elements.save;
 
 const formUpdateAvatar = document.querySelector('form[name=update-avatar]');
 const linkImageInput = formUpdateAvatar.elements['link-img'];
@@ -78,7 +77,6 @@ bttnClosePopupImage,
 formEditProfile,
 nameInput,
 jobInput,
-bttnSaveEditProfile,
 
 formUpdateAvatar,
 linkImageInput,

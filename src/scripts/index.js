@@ -2,7 +2,8 @@ import '../pages/index.css'; // импорт главного файла сти�
 import {createCard, delCard, likeCard} from './card.js';
 import {openModal, closeModal} from './modal.js';
 import {enableValidation, clearValidation} from './validation.js';
-import {getUser, getInitialCards, editeProfileServer, addNewPlaceServer, updateAvatarServer, deleteCardServer} from './api.js';
+import {getUser, getInitialCards, editeProfileServer, addNewPlaceServer, deleteCardServer,validateLinkImg} from './api.js';
+import {handleSubmit} from './utils.js';
 import {
   validConfig,
   placesList,
@@ -24,7 +25,6 @@ import {
   formEditProfile,
   nameInput,
   jobInput,
-  bttnSaveEditProfile,
   formUpdateAvatar,
   linkImageInput,
   formNewPlace,
@@ -34,15 +34,6 @@ import {
   profileTitle,
   profileJob,
   } from './constants.js'
-  
-
-function renderLoading (isLoading) {
-  if (isLoading) {
-    bttnSaveEditProfile.textContent = 'Сохранение...';
-  } else {
-      bttnSaveEditProfile.textContent = 'Сохранить';
-  }
-}
 
 //Обработчик открытия popup с img - начало
 function openPopupImg (evt) {
@@ -62,39 +53,39 @@ buttonEditProfile.addEventListener('click', () => {
   clearValidation (formEditProfile, validConfig);
   openModal(popupEdit); 
 });
-function handleFormEditProfileSubmit(evt) {
-  evt.preventDefault();
-  renderLoading(true);
+
+function handleProfileFormSubmit(evt) {
   const valueName = nameInput.value;
   const valueJob = jobInput.value;
-  editeProfileServer (valueName, valueJob)
-    .then (() => {
-      profileTitle.textContent = valueName;
-      profileJob.textContent = valueJob;
-    })
-    .finally (
-      renderLoading(false)
-    )
-  closeModal(evt.target.closest('.popup'));
+  // создаем функцию, которая возвращает промис, так как любой запрос возвращает его 
+  function makeRequest() {
+    // return позволяет потом дальше продолжать цепочку `then, catch, finally`
+    return editeProfileServer (valueName, valueJob).then((userData) => {
+      profileTitle.textContent = userData.name;
+      profileJob.textContent = userData.about;
+    });
+  }
+  // вызываем универсальную функцию, передавая в нее запрос, событие и текст изменения кнопки (если нужен другой, а не `"Сохранение..."`)
+  handleSubmit(makeRequest, evt);
 }
-formEditProfile.addEventListener('submit', handleFormEditProfileSubmit);
+formEditProfile.addEventListener('submit', handleProfileFormSubmit);
 
-//Открытие и редактирование аватара - начало
+//Обновление аватара - начало
 profileImage.addEventListener('click', () => {
   linkImageInput.value = '';
   clearValidation (formUpdateAvatar, validConfig);
   openModal(popupUpdateAvatar);
-})
-function handleFormEditProfileImageSubmit(evt) {
-  evt.preventDefault();
+});
+function handleUpdateAvatarFormSubmit(evt) {
   const valuelinkImage = linkImageInput.value;
-  updateAvatarServer (valuelinkImage)
-    .then (() => {
-      profileImage.style = `background-image: url(${valuelinkImage})`;
+  function makeRequest () {
+    return validateLinkImg (valuelinkImage).then ((newLinkImg) => {
+      profileImage.style = `background-image: url(${newLinkImg.avatar})`;
     })
-  closeModal(evt.target.closest('.popup'));
+  }
+  handleSubmit(makeRequest, evt)
 }
-formUpdateAvatar.addEventListener('submit', handleFormEditProfileImageSubmit);
+formUpdateAvatar.addEventListener('submit', handleUpdateAvatarFormSubmit);
 
 //Открытие и добавление новой карточки - начало
 buttonAddNewCard.addEventListener('click', () => {
@@ -103,18 +94,31 @@ buttonAddNewCard.addEventListener('click', () => {
   clearValidation (formNewPlace, validConfig);
   openModal(popupNewCard);
 });
-function handleFormNewPlaceSubmit(evt) {
-  evt.preventDefault();
+function handleNewPlaceFormSubmit(evt) {
   const valueNamePlace = namePlaceInput.value;
   const valueLink = linkInput.value;
-  addNewPlaceServer (valueNamePlace, valueLink)
-    .then ((newCard) => {
-      placesList.prepend(createCard(newCard, newCard.owner['_id'], openPopupImg, likeCard));
-    })
-  evt.target.reset();
-  closeModal(evt.target.closest('.popup'));
+  function makeRequest () {
+    return addNewPlaceServer (valueNamePlace, valueLink).then((newCard) => {
+      placesList.prepend(createCard(newCard, newCard.owner['_id'], openPopupImg, likeCard));  
+    }) 
+  }
+  handleSubmit(makeRequest, evt)
 }
-formNewPlace.addEventListener('submit', handleFormNewPlaceSubmit);
+formNewPlace.addEventListener('submit', handleNewPlaceFormSubmit);
+
+//Подтверждение удаления карточки - начало
+function handleConfirmFormSubmit(evt) {
+  const loadingText = "Удаление..."
+  const cardId = popupConfirm.dataset.cardId;
+  const card = placesList.querySelector(`[id="${cardId}"]`);
+  function makeRequest () {
+    return deleteCardServer(cardId).then (() => {
+      delCard(card);
+    })
+  }
+  handleSubmit(makeRequest, evt, loadingText);
+}
+formConfirm.addEventListener('submit', handleConfirmFormSubmit);
 
 //Закрытие Popup по кнопке "X"- начало
 function identifyPopupForClose (evt) {
@@ -148,17 +152,3 @@ Promise.all([getUser(), getInitialCards()])
   .catch ((err) => {
     console.log(err);
   })
-
-//Подтверждение удаления карточки - начало
-function handleFormConfirmSubmit(evt) {
-    evt.preventDefault();
-    const cardId = popupConfirm.dataset.cardId;
-    const card = placesList.querySelector(`[id="${cardId}"]`);
-      deleteCardServer (cardId)
-        .then (() => {
-          delCard(card);
-          closeModal(popupConfirm);
-        })
-  }
-
-formConfirm.addEventListener('submit', handleFormConfirmSubmit);
