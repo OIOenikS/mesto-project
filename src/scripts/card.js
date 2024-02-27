@@ -45,13 +45,19 @@ function changeStatusMyLike (card, buttonlikeCard, likeCounter, likeCard) {
         likeCard(buttonlikeCard);
         likeCounter.textContent = updatedСard.likes.length;
       })
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
   } else {
     addLikeServer (card)
       .then ((updatedСard) => {
         likeCard(buttonlikeCard);
         likeCounter.textContent = updatedСard.likes.length;
       })
-  }
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`)
+      })
+    }
 }
 
 function createCard(card, userId ,openImagePopup, likeCard) {

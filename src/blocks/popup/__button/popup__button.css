@@ -23,7 +23,6 @@
   color: #0002;
   background: #0000;
   border: 1px solid #0002;
-  pointer-events: none;
 }
 
 @media screen and (max-width: 568px) {
