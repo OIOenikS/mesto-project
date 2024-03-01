@@ -90,7 +90,7 @@ function validateLinkImg (valuelinkImage) {
     if (res.ok) {
       return res.headers
     }
-  return Promise.reject(`Запрос не выполнен, ошибка: ${res.status}`);
+  return Promise.reject(`Запрос на изменение аватара не выполнен, ошибка: ${res.status}`);
   })
   .then ((headers) => {
     if (headers.get('Content-type').includes('image')) {

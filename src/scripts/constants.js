@@ -14,32 +14,29 @@ const sectionProfile = document.querySelector('.profile');
 const buttonEditProfile = sectionProfile.querySelector('.profile__edit-button');
 const buttonAddNewCard = sectionProfile.querySelector('.profile__add-button');
 
+const closePopupButtons = document.querySelectorAll('.popup__close');
+
 const popupUpdateAvatar = document.querySelector('.popup_type_update-avatar');
-const bttnClosePopupUpdateAvatar = popupUpdateAvatar.querySelector('.popup__close');
 
 const popupEdit = document.querySelector('.popup_type_edit');
-const bttnClosePopupEdit = popupEdit.querySelector('.popup__close');
 
 const popupNewCard = document.querySelector('.popup_type_new-card');
-const bttnClosePopupNewCard = popupNewCard.querySelector('.popup__close');
 
 const popupConfirm = document.querySelector('.popup_type_confirm');
-const bttnClosePopupConfirm = popupConfirm.querySelector('.popup__close');
-const formConfirm = document.querySelector('form[name=confirm]');
+const formConfirm = document.forms.confirm;
 
 const popupImage = document.querySelector('.popup_type_image');
 const captionPopup = popupImage.querySelector('.popup__caption');
 const imgOfPopup = popupImage.querySelector('.popup__image');
-const bttnClosePopupImage = popupImage.querySelector('.popup__close');
 
-const formEditProfile = document.querySelector('form[name=edit-profile]');
+const formEditProfile = document.forms["edit-profile"];
 const nameInput = formEditProfile.elements.name;
 const jobInput = formEditProfile.elements.description;
 
-const formUpdateAvatar = document.querySelector('form[name=update-avatar]');
+const formUpdateAvatar = document.forms["update-avatar"];
 const linkImageInput = formUpdateAvatar.elements['link-img'];
 
-const formNewPlace = document.querySelector('form[name=new-place]');
+const formNewPlace = document.forms["new-place"];
 const namePlaceInput = formNewPlace.elements['place-name'];
 const linkInput = formNewPlace.elements.link;
 
@@ -49,42 +46,27 @@ const profileJob = document.querySelector('.profile__description');
 
 export {
 validConfig,
-
 cardTemplate, // in card.js
 placesList,
-
 buttonEditProfile,
 buttonAddNewCard,
-
+closePopupButtons,
 popupUpdateAvatar,
-bttnClosePopupUpdateAvatar,
-
 popupEdit,
-bttnClosePopupEdit,
-
 popupNewCard,
-bttnClosePopupNewCard,
-
 popupConfirm,
-bttnClosePopupConfirm,
 formConfirm, // in card.js
-
 popupImage,
 captionPopup,
 imgOfPopup,
-bttnClosePopupImage,
-
 formEditProfile,
 nameInput,
 jobInput,
-
 formUpdateAvatar,
 linkImageInput,
-
 formNewPlace,
 namePlaceInput,
 linkInput,
-
 profileImage,
 profileTitle,
 profileJob,

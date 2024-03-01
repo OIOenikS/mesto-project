@@ -1,6 +1,5 @@
-import {cardTemplate, popupConfirm} from './constants.js';
+import {cardTemplate} from './constants.js';
 import {addLikeServer, deleteLikeServer} from './api.js';
-import {openModal} from './modal.js';
 
 function delCard (cardItem) {
   cardItem.remove();
@@ -38,29 +37,27 @@ function checkMyLike (card, userId) {
   })
 }
 
-function changeStatusMyLike (card, buttonlikeCard, likeCounter, likeCard) {
+function changeStatusMyLike (likeConfig) {
+  const {card, buttonlikeCard, likeCounter, likeCard} = likeConfig;
   if (buttonlikeCard.classList.contains('card__like-button_is-active')) {
     deleteLikeServer (card)
       .then ((updatedСard) => {
         likeCard(buttonlikeCard);
         likeCounter.textContent = updatedСard.likes.length;
       })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`)
-      })
+      .catch(console.error)
   } else {
     addLikeServer (card)
       .then ((updatedСard) => {
         likeCard(buttonlikeCard);
         likeCounter.textContent = updatedСard.likes.length;
       })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`)
-      })
+      .catch(console.error)
     }
 }
 
-function createCard(card, userId ,openImagePopup, likeCard) {
+function createCard(cardConfig) {
+  const {card, userId, openPopupImg, likeCard, handleDelete} = cardConfig;
   const cardElement = getCardTemplate(cardTemplate);
   const cardTitle = cardElement.querySelector('.card__title');
   const imgCard = cardElement.querySelector('.card__image');
@@ -76,15 +73,14 @@ function createCard(card, userId ,openImagePopup, likeCard) {
   likeCounter.textContent = `${counterLikes}`;
   imgCard.src = `${card.link}`;
   imgCard.alt = `Фото: ${card.name}`;
-  imgCard.addEventListener('click', openImagePopup);
+  imgCard.addEventListener('click', () => {
+    openPopupImg(card.name, card.link);
+  });
 
-  buttonCardDel.addEventListener('click', () => {
-    popupConfirm.dataset.cardId = cardElement.id;
-    openModal (popupConfirm);
-  })
+  buttonCardDel.addEventListener('click', handleDelete)
   
   buttonlikeCard.addEventListener('click', (evt) => {
-    changeStatusMyLike (card, evt.target, likeCounter, likeCard);
+    changeStatusMyLike ({card, buttonlikeCard: evt.target, likeCounter, likeCard});
   });
 
   deletebuttonCardDel (idUserCreateCard, userId, buttonCardDel); //Удалили иконку кнопки удаления на карточке

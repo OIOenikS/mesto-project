@@ -10,18 +10,14 @@ import {
   buttonEditProfile,
   buttonAddNewCard,
   popupUpdateAvatar,
-  bttnClosePopupUpdateAvatar,
+  closePopupButtons,
   popupEdit,
-  bttnClosePopupEdit,
   popupNewCard,
-  bttnClosePopupNewCard,
   popupConfirm,
-  bttnClosePopupConfirm,
   formConfirm,
   popupImage,
   captionPopup,
   imgOfPopup,
-  bttnClosePopupImage,
   formEditProfile,
   nameInput,
   jobInput,
@@ -35,11 +31,17 @@ import {
   profileJob,
   } from './constants.js'
 
+function handleDelete (evt) {
+  const cardElement = evt.target.closest('.card');
+  popupConfirm.dataset.cardId = cardElement.id;
+  openModal (popupConfirm); 
+}
+
 //Обработчик открытия popup с img - начало
-function openPopupImg (evt) {
-  imgOfPopup.src = evt.target.src;
-  imgOfPopup.alt = evt.target.alt;
-  captionPopup.textContent = evt.target.closest('.places__item').textContent;
+function openPopupImg (cardName, cardLink) {
+  imgOfPopup.src = cardLink;
+  imgOfPopup.alt = cardName;
+  captionPopup.textContent = cardName;
   openModal(popupImage);
 }
 
@@ -53,7 +55,6 @@ buttonEditProfile.addEventListener('click', () => {
   clearValidation (formEditProfile, validConfig);
   openModal(popupEdit); 
 });
-
 function handleProfileFormSubmit(evt) {
   const valueName = nameInput.value;
   const valueJob = jobInput.value;
@@ -72,8 +73,6 @@ formEditProfile.addEventListener('submit', handleProfileFormSubmit);
 
 //Обновление аватара - начало
 profileImage.addEventListener('click', () => {
-  linkImageInput.value = '';
-  clearValidation (formUpdateAvatar, validConfig);
   openModal(popupUpdateAvatar);
 });
 function handleUpdateAvatarFormSubmit(evt) {
@@ -89,9 +88,6 @@ formUpdateAvatar.addEventListener('submit', handleUpdateAvatarFormSubmit);
 
 //Открытие и добавление новой карточки - начало
 buttonAddNewCard.addEventListener('click', () => {
-  namePlaceInput.value = '';
-  linkInput.value = '';
-  clearValidation (formNewPlace, validConfig);
   openModal(popupNewCard);
 });
 function handleNewPlaceFormSubmit(evt) {
@@ -99,7 +95,7 @@ function handleNewPlaceFormSubmit(evt) {
   const valueLink = linkInput.value;
   function makeRequest () {
     return addNewPlaceServer (valueNamePlace, valueLink).then((newCard) => {
-      placesList.prepend(createCard(newCard, newCard.owner['_id'], openPopupImg, likeCard));  
+      placesList.prepend(createCard({card:newCard, userId:newCard.owner['_id'], openPopupImg, likeCard, handleDelete}));
     }) 
   }
   handleSubmit(makeRequest, evt)
@@ -121,34 +117,29 @@ function handleConfirmFormSubmit(evt) {
 formConfirm.addEventListener('submit', handleConfirmFormSubmit);
 
 //Закрытие Popup по кнопке "X"- начало
-function identifyPopupForClose (evt) {
-  closeModal(evt.target.closest('.popup'));
+function closePopup (evt) {
+  const popupElement = evt.target.closest('.popup');
+  const formElement = popupElement.querySelector('.popup__form');
+  closeModal(popupElement);
+  clearValidation (formElement, validConfig);
 }
-bttnClosePopupEdit.addEventListener('click', identifyPopupForClose);
-bttnClosePopupNewCard.addEventListener('click', identifyPopupForClose);
-bttnClosePopupImage.addEventListener('click', identifyPopupForClose);
-bttnClosePopupUpdateAvatar.addEventListener('click', identifyPopupForClose);
-bttnClosePopupConfirm.addEventListener('click', identifyPopupForClose);
+
+closePopupButtons.forEach((closePopupButton) => {
+  closePopupButton.addEventListener('click', closePopup);
+});
 
 //Загрузка карточек и данных пользователя с сервера при открытии страницы - начало
 Promise.all([getUser(), getInitialCards()])
-  .then ((resultOfPromises) => {
-    return resultOfPromises;
-  })
-  .then ((resultOfPromises) => {
-    const user = resultOfPromises[0];
+  .then (([user, cards]) => {
     profileImage.style = `background-image: url(${user.avatar})`;
     profileTitle.textContent = `${user.name}`;
     profileJob.textContent = `${user.about}`
 
-    const cards = resultOfPromises[1];
     cards.forEach( card => {
-      const cardElement = createCard(card, user['_id'] ,openPopupImg, likeCard);
+      const cardElement = createCard({card, userId:user['_id'], openPopupImg, likeCard, handleDelete});
       
       placesList.append(cardElement)
       
     })
   })
-  .catch ((err) => {
-    console.log(err);
-  })
+  .catch(console.error)

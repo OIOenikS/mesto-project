@@ -1,4 +1,5 @@
 import {closeModal} from './modal.js';
+import {showError} from './index.js';
 
 //функция проверки ответа
 export function checkResponse (res) {
@@ -39,10 +40,7 @@ export function handleSubmit(request, evt, loadingText = "Сохранение..
       evt.target.reset();
       closeModal(evt.target.closest('.popup'));
     })
-    .catch((err) => {
-       // в каждом запросе нужно ловить ошибку
-      console.error(`Ошибка: ${err}`);
-    })
+    .catch(console.error)
      // в каждом запросе в `finally` нужно возвращать обратно начальный текст кнопки
     .finally(() => {
       renderLoading(false, submitButton, initialText);
