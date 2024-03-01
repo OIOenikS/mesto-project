@@ -58,7 +58,7 @@ const hasInputElement = (elements) => {
   });
 }
 //Функция, которая вешает слушатель события reset, только на те формы, у которых есть inputElement
-//На кнопку, у popup confirm, слушатель не повесится, иначе нельзя будет удалить несколько карточек сподрядн
+//На кнопку, у popup confirm, слушатель не повесится, иначе нельзя будет удалить несколько карточек сподряд
 function addListenerReset (formElement, submitButton, inactiveButtonClass) {
   const elements = Array.from(formElement.elements);
   if (hasInputElement (elements)) {

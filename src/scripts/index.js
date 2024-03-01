@@ -116,20 +116,9 @@ function handleConfirmFormSubmit(evt) {
 }
 formConfirm.addEventListener('submit', handleConfirmFormSubmit);
 
-//Закрытие Popup по кнопке "X"- начало
-//проверка, чтоб исключить popup c изображением, который без формы
-function resetForm (formElement) {
-  if (formElement) {
-    formElement.reset();
-    clearValidation (formElement, validConfig);
-  }
-}
-
 function closePopup (evt) {
   const popupElement = evt.target.closest('.popup');
-  const formElement = popupElement.querySelector('.popup__form');
   closeModal(popupElement);
-  resetForm (formElement);
 }
 
 closePopupButtons.forEach((closePopupButton) => {
