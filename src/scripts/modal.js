@@ -20,16 +20,10 @@ function closeOverlayPopup (evt) {
   }
 }
 
-function resetForm (popup) {
-  const formElement = popup.querySelector('.popup__form');
-  formElement.reset();
-}
-
 function closeModal (popup) {
   popup.classList.remove('popup_is-opened');
   popup.removeEventListener('click', closeOverlayPopup);
   document.removeEventListener('keydown', closeEscPopup);
-  resetForm (popup)
 }
 
 export {openModal, closeModal};

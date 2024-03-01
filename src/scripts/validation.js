@@ -52,14 +52,28 @@ const toggleButtonState = (inputList, submitButton, inactiveButtonClass) => {
   }
 }
 
+const hasInputElement = (elements) => {
+  return elements.some((element) => {
+    return element.classList.contains('popup__input');
+  });
+}
+//Функция, которая вешает слушатель события reset, только на те формы, у которых есть inputElement
+//На кнопку, у popup confirm, слушатель не повесится, иначе нельзя будет удалить несколько карточек сподрядн
+function addListenerReset (formElement, submitButton, inactiveButtonClass) {
+  const elements = Array.from(formElement.elements);
+  if (hasInputElement (elements)) {
+    formElement.addEventListener('reset', () => {
+      disableButton(submitButton, inactiveButtonClass,)
+    });
+  }
+}
+
 const setEventListeners = (formElement, formConfig) => {
   const {inputSelector, submitButtonSelector, inactiveButtonClass, ...errorConfig} = formConfig;
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
   const submitButton = formElement.querySelector(submitButtonSelector);
   toggleButtonState(inputList, submitButton, inactiveButtonClass);
-  formElement.addEventListener('reset', () => {
-    disableButton(submitButton, inactiveButtonClass)
-  });
+  addListenerReset (formElement, submitButton, inactiveButtonClass);
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function () {
